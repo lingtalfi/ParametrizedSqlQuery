@@ -7,7 +7,7 @@ ParametrizedSqlQueryUtil::error
 
 
 
-ParametrizedSqlQueryUtil::error — Sets an error.
+ParametrizedSqlQueryUtil::error — Throws an exception.
 
 
 
@@ -21,7 +21,7 @@ protected [ParametrizedSqlQueryUtil::error](https://github.com/lingtalfi/Paramet
 
 
 
-Sets an error.
+Throws an exception.
 
 
 
@@ -54,7 +54,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryUtil::error](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L200-L203)
+See the source code for method [ParametrizedSqlQueryUtil::error](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L228-L231)
 
 
 See Also

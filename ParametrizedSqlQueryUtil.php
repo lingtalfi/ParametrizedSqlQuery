@@ -169,9 +169,37 @@ class ParametrizedSqlQueryUtil
             //--------------------------------------------
             $limit = $requestDeclaration['limit'] ?? null;
             if ($limit) {
-                $page = (int)$limit['page'];
-                $length = (int)$limit['length'];
-                $offset = ($page - 1) * $length;
+                $page = $limit['page'];
+                $length = $limit['length'];
+
+
+                if ('$page' === $page || '$page_length' === $length) {
+                    if (array_key_exists("limit", $tags)) {
+                        $tagsLimit = $tags['limit'];
+                        if (is_array($tagsLimit)) {
+                            if ('$page' === $page) {
+                                if (array_key_exists("page", $tagsLimit)) {
+                                    $page = $tagsLimit['page'];
+                                } else {
+                                    $this->error("The limit tag's \"page\" property is not defined, but is required by the request declaration.");
+                                }
+                            }
+                            if ('$page_length' === $length) {
+                                if (array_key_exists("page_length", $tagsLimit)) {
+                                    $length = $tagsLimit['page_length'];
+                                } else {
+                                    $this->error("The limit tag's \"page_length\" property is not defined, but is required by the request declaration.");
+                                }
+                            }
+                        } else {
+                            $this->error("The limit tag must be an array.");
+                        }
+                    } else {
+                        $this->error("The limit tag was not set. It's required because this request uses The \$page and/or \$page_length variable in its limit expression.");
+                    }
+                }
+
+                $offset = ((int)$page - 1) * (int)$length;
                 $query->setLimit($offset, $length);
             }
 
@@ -181,7 +209,7 @@ class ParametrizedSqlQueryUtil
             return $query;
 
         } else {
-            $this->error("Some mandatory field is missing. It could be one either the  \"table\" property, or the \"fields\" property.");
+            $this->error("Some mandatory field is missing. It could be one either the  \"table\" property, or the \"base_fields\" property.");
         }
     }
 
@@ -191,7 +219,7 @@ class ParametrizedSqlQueryUtil
     //
     //--------------------------------------------
     /**
-     * Sets an error.
+     * Throws an exception.
      *
      *
      * @param string $message

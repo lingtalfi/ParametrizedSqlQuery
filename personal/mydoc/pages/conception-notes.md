@@ -3,9 +3,13 @@ ParametrizedSqlQuery
 2019-08-12
 
 
+This is a work in progress.
+
+
 
 The parametrizedSqlQuery originates from a project originally called Realist, which ended up in the
-[Light_Realist](https://github.com/lingtalfi/Light_Realist) repository.
+[Light_Realist](https://github.com/lingtalfi/Light_Realist) repository (which might not yet be publicly available at the moment
+you read those lines).
 
 
 The main goal of this planet is to let external parameters (often coming from a gui) govern the creation
@@ -135,22 +139,22 @@ The structure of the **request declaration** (aka parametrized request) is the f
         - order_animal_name_asc: a.name asc
         - order_animal_name_desc: a.name desc
         
-- limit: array. Array of tag => limitDeclaration. 
-        With limitDeclaration an array containing two entries: page and length.
-        The values of those entries can use the following variables:
-        
-        - $page_number: int. The number of the page to display (offset)
-        - $length: int. The number of elements to display
+- limit: array. The limit array has the following structure:
 
+        - page: int|string, the number of the page to display. Or the special value $page, which means that 
+                the value will be provided by the user. 
+        - length: int|string, the number of items to display. Or the special value $page_length, which means that
+                the value will be provided by the user.
+        
+        
         Notice that we inject the parameters directly into the limit expression.          
 
-    Examples:
-        - limit_animal: 
-            page: $page_number
-            length: $length
-        - limit_animal: 
-            page: $page_number
-            length: 10
+        Examples: 
+            - limit:
+                - page: $page
+                - length: $page_length
+                
+                                
     
     
 - wiring: array. This section is explained in more details below.    
