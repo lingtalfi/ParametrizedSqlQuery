@@ -442,6 +442,10 @@ array(4) {
 History Log
 =============
 
+- 1.2.0 -- 2019-08-14
+
+    - change the limit variables and structure again
+    
 - 1.1.0 -- 2019-08-14
 
     - change the limit variables and structure

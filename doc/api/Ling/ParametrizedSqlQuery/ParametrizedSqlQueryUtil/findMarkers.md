@@ -49,7 +49,7 @@ Returns array.
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryUtil::findMarkers](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L240-L247)
+See the source code for method [ParametrizedSqlQueryUtil::findMarkers](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L241-L248)
 
 
 See Also

@@ -115,6 +115,19 @@ class ParametrizedSqlQueryUtil
             $requestMarkers = [];
 
 
+            // special tags
+            $tag_page = null;
+            $tag_page_length = null;
+            if (array_key_exists('$page', $tags)) {
+                $tag_page = $tags['$page'];
+                unset($tags['$page']);
+            }
+            if (array_key_exists('$page_length', $tags)) {
+                $tag_page_length = $tags['$page_length'];
+                unset($tags['$page_length']);
+            }
+
+
             foreach ($tags as $tag => $v) {
 
                 //--------------------------------------------
@@ -172,30 +185,18 @@ class ParametrizedSqlQueryUtil
                 $page = $limit['page'];
                 $length = $limit['length'];
 
-
-                if ('$page' === $page || '$page_length' === $length) {
-                    if (array_key_exists("limit", $tags)) {
-                        $tagsLimit = $tags['limit'];
-                        if (is_array($tagsLimit)) {
-                            if ('$page' === $page) {
-                                if (array_key_exists("page", $tagsLimit)) {
-                                    $page = $tagsLimit['page'];
-                                } else {
-                                    $this->error("The limit tag's \"page\" property is not defined, but is required by the request declaration.");
-                                }
-                            }
-                            if ('$page_length' === $length) {
-                                if (array_key_exists("page_length", $tagsLimit)) {
-                                    $length = $tagsLimit['page_length'];
-                                } else {
-                                    $this->error("The limit tag's \"page_length\" property is not defined, but is required by the request declaration.");
-                                }
-                            }
-                        } else {
-                            $this->error("The limit tag must be an array.");
-                        }
+                if ('$page' === $page) {
+                    if (null !== $tag_page) {
+                        $page = $tag_page;
                     } else {
-                        $this->error("The limit tag was not set. It's required because this request uses The \$page and/or \$page_length variable in its limit expression.");
+                        $this->error("The \"\$page\" tag is not defined, but is required by the request declaration.");
+                    }
+                }
+                if ('$page_length' === $length) {
+                    if (null !== $tag_page_length) {
+                        $length = $tag_page_length;
+                    } else {
+                        $this->error("The \"\$page_length\" tag is not defined, but is required by the request declaration.");
                     }
                 }
 
