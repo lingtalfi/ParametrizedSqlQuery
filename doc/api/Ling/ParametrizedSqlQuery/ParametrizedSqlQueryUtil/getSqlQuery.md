@@ -39,7 +39,10 @@ Parameters
 
 - tags
 
-    Array of tag => parameters.
+    Array of tagItems, each of which being an array with the following structure:
+- tag_id: string. The tag name
+- ?variables: array. The tag variables if any
+- ?tag_group: string. The name of the tag group if any.
 
 
 Return values
@@ -61,7 +64,7 @@ Exceptions thrown
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryUtil::getSqlQuery](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L46-L215)
+See the source code for method [ParametrizedSqlQueryUtil::getSqlQuery](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L127-L330)
 
 
 See Also
@@ -69,5 +72,5 @@ See Also
 
 The [ParametrizedSqlQueryUtil](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil.md) class.
 
-Next method: [error](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/error.md)<br>
+Previous method: [__construct](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/__construct.md)<br>Next method: [setLogger](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/setLogger.md)<br>
 

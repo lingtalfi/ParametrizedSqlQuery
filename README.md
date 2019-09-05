@@ -442,6 +442,17 @@ array(4) {
 History Log
 =============
 
+- 1.3.1 -- 2019-09-05
+
+    - fix doc links 
+    - add comment in ParametrizedSqlQueryUtil 
+    
+- 1.3.0 -- 2019-08-22
+
+    - add routine mechanism 
+    - refined variable replacement mechanism 
+    - changed the limit variables and structure again
+
 - 1.2.0 -- 2019-08-14
 
     - change the limit variables and structure again
