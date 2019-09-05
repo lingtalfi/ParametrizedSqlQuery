@@ -92,8 +92,6 @@ class ParametrizedSqlQueryUtil
     protected $logger;
 
 
-
-
     /**
      * Builds the ParametrizedSqlQueryUtil instance.
      */
@@ -309,8 +307,10 @@ class ParametrizedSqlQueryUtil
                 }
 
                 if ($pageLength) {
-                    $offset = ((int)$page - 1) * (int)$pageLength;
-                    $query->setLimit($offset, $pageLength);
+                    if ('all' !== $pageLength) {
+                        $offset = ((int)$page - 1) * (int)$pageLength;
+                        $query->setLimit($offset, $pageLength);
+                    }
                 }
                 // else just one big page (i.e. no pagination)
 

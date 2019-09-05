@@ -442,6 +442,10 @@ array(4) {
 History Log
 =============
 
+- 1.4.0 -- 2019-09-05
+
+    - update ParametrizedSqlQueryUtil now handles pageLength=all special value
+    
 - 1.3.1 -- 2019-09-05
 
     - fix doc links 
