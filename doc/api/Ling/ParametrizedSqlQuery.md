@@ -1,6 +1,6 @@
 Ling/ParametrizedSqlQuery
 ================
-2019-08-12 --> 2019-09-05
+2019-08-12 --> 2019-10-09
 
 
 
@@ -17,6 +17,7 @@ Table of contents
 
 Dependencies
 ============
+- [ArrayToString](https://github.com/lingtalfi/ArrayToString)
 - [BabyYaml](https://github.com/lingtalfi/BabyYaml)
 - [Bat](https://github.com/lingtalfi/Bat)
 - [SqlQuery](https://github.com/lingtalfi/SqlQuery)

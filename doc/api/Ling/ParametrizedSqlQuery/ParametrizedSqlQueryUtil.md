@@ -4,7 +4,7 @@
 
 The ParametrizedSqlQueryUtil class
 ================
-2019-08-12 --> 2019-09-05
+2019-08-12 --> 2019-10-09
 
 
 
@@ -32,6 +32,7 @@ class <span class="pl-k">ParametrizedSqlQueryUtil</span>  {
     - protected static array [$operators](#property-operators) = ['=','>','>=','<','<=','!=','like','%like%','%like','like%','not_like','%not_like%','%not_like','not_like%','in','not_in','between','not_between','null','is_not_null'] ;
     - private array [$_options](#property-_options) ;
     - protected array [$_markers](#property-_markers) ;
+    - protected array [$_processedMarkers](#property-_processedMarkers) ;
     - protected array [$_fields](#property-_fields) ;
     - protected [Ling\UniversalLogger\UniversalLoggerInterface](https://github.com/lingtalfi/UniversalLogger/blob/master/UniversalLoggerInterface.php) [$logger](#property-logger) ;
 
@@ -44,7 +45,7 @@ class <span class="pl-k">ParametrizedSqlQueryUtil</span>  {
     - protected [prepareExpression](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/prepareExpression.md)(string $expr, string $tagName, array $tagVariables, array $tagOptions) : string
     - protected [resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md)(string $internalMarkerName, ?$value, array $tagOptions) : string
     - protected [applyOperatorAndValueRoutine](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/applyOperatorAndValueRoutine.md)(string &$expression, array $transformLikeOptions, array &$tags, array $tagOptions) : void
-    - protected [getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md)(string $marker) : string
+    - protected [getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md)(string $marker, bool $isFinal = false) : string
     - protected [combineWhere](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/combineWhere.md)(array $whereGroups) : string
 
 }
@@ -85,6 +86,25 @@ Properties
     This property holds the markers used by this instance.
     I use it to avoid repetition of markers.
     It's used only in the context of the getSqlQuery method.
+    
+    
+
+- <span id="property-_processedMarkers"><b>_processedMarkers</b></span>
+
+    This property holds the _processedMarkers for this instance.
+    
+    Usually, there is no problem with the same marker name being used multiple time.
+    For instance, the marker :expression could be used multiple times, such as in:
+    
+    - id like :%expression% or identifier like :%expression%, ...
+    
+    However, there are some cases where using the same marker is undesirable.
+    Including:
+    
+    - with the where treatment, when the applyOperatorAndValueRoutine method is executed, it already creates
+         a marker. So when the prepareExpression method is used after, it shouldn't re-create that marker.
+         This is done by putting the marker created by the applyOperatorAndValueRoutine method in this processed markers array.
+         This array is reset for every tag item. See the source code for more.
     
     
 

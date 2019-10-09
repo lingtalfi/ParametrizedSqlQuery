@@ -4,6 +4,7 @@
 namespace Ling\ParametrizedSqlQuery;
 
 
+use Ling\ArrayToString\ArrayToStringTool;
 use Ling\BabyYaml\BabyYamlUtil;
 use Ling\Bat\ArrayTool;
 use Ling\Bat\StringTool;
@@ -77,6 +78,30 @@ class ParametrizedSqlQueryUtil
      * @var array
      */
     protected $_markers;
+
+
+    /**
+     * This property holds the _processedMarkers for this instance.
+     *
+     * Usually, there is no problem with the same marker name being used multiple time.
+     * For instance, the marker :expression could be used multiple times, such as in:
+     *
+     * - id like :%expression% or identifier like :%expression%, ...
+     *
+     * However, there are some cases where using the same marker is undesirable.
+     * Including:
+     *
+     * - with the where treatment, when the applyOperatorAndValueRoutine method is executed, it already creates
+     *      a marker. So when the prepareExpression method is used after, it shouldn't re-create that marker.
+     *      This is done by putting the marker created by the applyOperatorAndValueRoutine method in this processed markers array.
+     *      This array is reset for every tag item. See the source code for more.
+     *
+     *
+     *
+     *
+     * @var array
+     */
+    protected $_processedMarkers;
 
     /**
      * This property holds the fields for this instance.
@@ -201,6 +226,9 @@ class ParametrizedSqlQueryUtil
 
 
             foreach ($tags as $tagItem) {
+
+                $this->_processedMarkers = [];
+
                 $tagName = $tagItem['tag_id'];
                 $tagVariables = $tagItem['variables'] ?? [];
 
@@ -233,7 +261,6 @@ class ParametrizedSqlQueryUtil
                     }
                     $whereGroups[$tagName][] = $realWhereExpression;
                 }
-
 
                 //--------------------------------------------
                 // GROUP BY
@@ -486,6 +513,7 @@ class ParametrizedSqlQueryUtil
              *          pseudo like %expression% ...
              */
             $internalMarkers = array_unique($internalMarkers);
+            $internalMarkers = array_diff($internalMarkers, $this->_processedMarkers);
         }
 
 
@@ -612,7 +640,7 @@ class ParametrizedSqlQueryUtil
                 case "not_like%":
 
 
-                    $markerName = $this->getNewMarkerName($target);
+                    $markerName = $this->getNewMarkerName($target, true);
 
                     switch ($sourceValue) {
                         case "%like%":
@@ -643,7 +671,7 @@ class ParametrizedSqlQueryUtil
                     $marker = "in_tag";
                     $ins = [];
                     foreach ($targetValue as $v) {
-                        $markerName = $this->getNewMarkerName($marker);
+                        $markerName = $this->getNewMarkerName($marker, true);
                         $this->_markers[$markerName] = $v;
                         $ins[] = ":" . $markerName;
                         $tags[$markerName] = $v;
@@ -669,7 +697,7 @@ class ParametrizedSqlQueryUtil
 
                             $betweens = [];
                             foreach ($targetValue as $v) {
-                                $markerName = $this->getNewMarkerName($marker);
+                                $markerName = $this->getNewMarkerName($marker, true);
                                 $this->_markers[$markerName] = $v;
                                 $betweens[] = ":" . $markerName;
                                 $tags[$markerName] = $v;
@@ -696,6 +724,7 @@ class ParametrizedSqlQueryUtil
                     $expression = preg_replace('!\$' . $source . '\b!', $keyword, $expression);
                     break;
                 default:
+                    $this->error("Unknown operator: $sourceValue.");
                     break;
             }
 
@@ -707,11 +736,16 @@ class ParametrizedSqlQueryUtil
      * Returns a unique marker name that's not already in the _markers array.
      *
      * @param string $marker
+     * @param bool $isFinal
      * @return string
      */
-    protected function getNewMarkerName(string $marker): string
+    protected function getNewMarkerName(string $marker, bool $isFinal = false): string
     {
-        return StringTool::incrementNumericalSuffix($marker, $this->_markers, true);
+        $res = StringTool::incrementNumericalSuffix($marker, $this->_markers, true);
+        if (true === $isFinal) {
+            $this->_processedMarkers[] = $res;
+        }
+        return $res;
     }
 
 

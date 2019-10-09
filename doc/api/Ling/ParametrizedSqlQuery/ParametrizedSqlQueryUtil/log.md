@@ -53,7 +53,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryUtil::log](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L352-L357)
+See the source code for method [ParametrizedSqlQueryUtil::log](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L379-L384)
 
 
 See Also
