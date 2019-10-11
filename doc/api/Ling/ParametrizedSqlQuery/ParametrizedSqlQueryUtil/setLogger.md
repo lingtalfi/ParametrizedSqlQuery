@@ -49,7 +49,7 @@ Returns void.
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryUtil::setLogger](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L368-L371)
+See the source code for method [ParametrizedSqlQueryUtil::setLogger](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L359-L362)
 
 
 See Also

@@ -442,6 +442,10 @@ array(4) {
 History Log
 =============
 
+- 1.5.0 -- 2019-10-11
+
+    - update ParametrizedSqlQueryUtil to keep up with new duelist conception
+    
 - 1.4.1 -- 2019-10-09
 
     - fix ParametrizedSqlQueryUtil duplicate marker names problem

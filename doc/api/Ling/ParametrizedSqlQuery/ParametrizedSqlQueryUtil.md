@@ -4,7 +4,7 @@
 
 The ParametrizedSqlQueryUtil class
 ================
-2019-08-12 --> 2019-10-09
+2019-08-12 --> 2019-10-11
 
 
 
@@ -46,7 +46,6 @@ class <span class="pl-k">ParametrizedSqlQueryUtil</span>  {
     - protected [resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md)(string $internalMarkerName, ?$value, array $tagOptions) : string
     - protected [applyOperatorAndValueRoutine](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/applyOperatorAndValueRoutine.md)(string &$expression, array $transformLikeOptions, array &$tags, array $tagOptions) : void
     - protected [getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md)(string $marker, bool $isFinal = false) : string
-    - protected [combineWhere](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/combineWhere.md)(array $whereGroups) : string
 
 }
 
@@ -135,7 +134,6 @@ Methods
 - [ParametrizedSqlQueryUtil::resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md) &ndash; Resolves the percent symbol in internal marker notation, and returns the result.
 - [ParametrizedSqlQueryUtil::applyOperatorAndValueRoutine](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/applyOperatorAndValueRoutine.md) &ndash; Applies the transformIfLike routine to the given expression.
 - [ParametrizedSqlQueryUtil::getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md) &ndash; Returns a unique marker name that's not already in the _markers array.
-- [ParametrizedSqlQueryUtil::combineWhere](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/combineWhere.md) &ndash; Combines the where fragment to inject in the sql query (depending on the configuration options), and returns it.
 
 
 

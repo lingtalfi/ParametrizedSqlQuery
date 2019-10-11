@@ -4,7 +4,6 @@
 namespace Ling\ParametrizedSqlQuery;
 
 
-use Ling\ArrayToString\ArrayToStringTool;
 use Ling\BabyYaml\BabyYamlUtil;
 use Ling\Bat\ArrayTool;
 use Ling\Bat\StringTool;
@@ -140,7 +139,6 @@ class ParametrizedSqlQueryUtil
      * Array of tagItems, each of which being an array with the following structure:
      * - tag_id: string. The tag name
      * - ?variables: array. The tag variables if any
-     * - ?tag_group: string. The name of the tag group if any.
      *
      *
      *
@@ -152,7 +150,7 @@ class ParametrizedSqlQueryUtil
         $this->_markers = [];
 
         $query = new SqlQuery();
-        $query->setDefaultWhereValue("0");
+        $query->setDefaultWhereValue(""); // pure style
 
 
         if (ArrayTool::arrayKeyExistAll(['table', 'base_fields'], $requestDeclaration)) {
@@ -221,7 +219,7 @@ class ParametrizedSqlQueryUtil
             $order = $requestDeclaration['order'] ?? [];
             $this->_options = $requestDeclaration['options'] ?? [];
             $tagOptions = $this->_options["tag_options"] ?? [];
-            $whereGroups = [];
+            $whereBlocks = [];
             $limitVariables = [];
 
 
@@ -238,8 +236,6 @@ class ParametrizedSqlQueryUtil
                     continue;
                 }
 
-//                $tagGroup = $tagItem['tag_group'] ?? $tagName;
-
 
                 $thisTagOptions = $tagOptions[$tagName] ?? [];
 
@@ -253,13 +249,8 @@ class ParametrizedSqlQueryUtil
                     if (array_key_exists("operator_and_value", $thisTagOptions)) {
                         $this->applyOperatorAndValueRoutine($whereExpr, $thisTagOptions['operator_and_value'], $tagVariables, $thisTagOptions);
                     }
-
-
                     $realWhereExpression = $this->prepareExpression($whereExpr, $tagName, $tagVariables, $thisTagOptions);
-                    if (false === array_key_exists($tagName, $whereGroups)) {
-                        $whereGroups[$tagName] = [];
-                    }
-                    $whereGroups[$tagName][] = $realWhereExpression;
+                    $whereBlocks[] = $realWhereExpression;
                 }
 
                 //--------------------------------------------
@@ -281,11 +272,14 @@ class ParametrizedSqlQueryUtil
                 }
             }
 
+
             //--------------------------------------------
-            // WHERE INJECTION (combining where)
+            // WHERE RESOLUTION
             //--------------------------------------------
-            if ($whereGroups) {
-                $sWhere = $this->combineWhere($whereGroups);
+            if ($whereBlocks) {
+                $sWhere = "";
+                $sWhere .= implode(PHP_EOL, $whereBlocks);
+                $sWhere .= PHP_EOL;
                 $query->addWhere($sWhere);
             }
 
@@ -344,9 +338,6 @@ class ParametrizedSqlQueryUtil
 
             }
 
-
-            $joins = $requestDeclaration['joins'] ?? [];
-            $where = $requestDeclaration['where'] ?? [];
 
 //            az($query->getSqlQuery(), $this->_markers);
             return $query;
@@ -631,6 +622,9 @@ class ParametrizedSqlQueryUtil
 
             $sourceValue = $tags[$source];
             $targetValue = $tags[$target];
+            /**
+             * https://github.com/lingtalfi/NotationFan/blob/master/sql-unofficial-standard-comparison-operators.md
+             */
             switch ($sourceValue) {
                 case "%like%":
                 case "%not_like%":
@@ -723,6 +717,15 @@ class ParametrizedSqlQueryUtil
                     unset($tags[$target]);
                     $expression = preg_replace('!\$' . $source . '\b!', $keyword, $expression);
                     break;
+
+                case "=":
+                case ">":
+                case ">=":
+                case "<":
+                case "<=":
+                case "!=":
+
+                    break;
                 default:
                     $this->error("Unknown operator: $sourceValue.");
                     break;
@@ -748,112 +751,4 @@ class ParametrizedSqlQueryUtil
         return $res;
     }
 
-
-    /**
-     * Combines the where fragment to inject in the sql query (depending on the configuration options), and returns it.
-     *
-     * Note: the returned fragment should be prefixed with WHERE 0 in order for the sql query to work.
-     *
-     * @param array $whereGroups
-     * An array of tag group => sql valid where fragments
-     *
-     * @return string
-     * @throws \Exception
-     */
-    protected function combineWhere(array $whereGroups): string
-    {
-
-        $sWhere = "";
-        $whereOptions = $this->_options['where'] ?? [];
-        $mode = $whereOptions['mode'] ?? "default";
-
-
-        switch ($mode) {
-            case "default":
-                // default behaviour
-                $sWhere = ' OR (';
-                $defaultOperator = $whereOptions['default_operator'] ?? 'AND';
-                $c = 0;
-                foreach ($whereGroups as $expressions) {
-                    foreach ($expressions as $expr) {
-                        if (0 !== $c) {
-                            $sWhere .= ' ' . $defaultOperator . " ";
-                        }
-                        $sWhere .= $expr;
-                        $c++;
-                    }
-                }
-                $sWhere .= ')';
-                break;
-            case "groups":
-
-
-                $expandedGroups = [];
-                foreach ($whereGroups as $tagGroup => $expressions) {
-                    $thisTagOptions = $tagOptions[$tagGroup] ?? [];
-                    $repeatOperator = $thisTagOptions['where_repeat_operator'] ?? 'AND';
-                    $expandedGroups[$tagGroup] = implode(' ' . $repeatOperator . ' ', $expressions);
-                }
-
-                if (1 === count($expandedGroups)) {
-
-                    $sWhere = ' OR (';
-                    $sWhere .= current($expandedGroups);
-                    $sWhere .= ')';
-
-                } else {
-
-
-                    $masks = $whereOptions['masks'];
-                    // order the masks by decreasing number of participants
-                    usort($masks, function (array $maskA, array $maskB) {
-                        return (
-                            count($maskA['participants']) < count($maskB['participants'])
-                        );
-                    });
-
-                    // looping all the masks
-                    $maskFound = false;
-                    $mask = null;
-                    foreach ($masks as $maskItem) {
-                        $participants = $maskItem['participants'];
-                        $mask = $maskItem['mask'];
-
-                        $hasAllParticipants = true;
-                        foreach ($participants as $participant) {
-                            if (false === array_key_exists($participant, $expandedGroups)) {
-                                $hasAllParticipants = false;
-                                break;
-                            }
-                        }
-                        if (true === $hasAllParticipants) {
-                            $maskFound = true;
-                            break;
-                        }
-                    }
-
-
-                    if (true === $maskFound) {
-                        foreach ($participants as $participant) {
-                            $mask = str_replace('{' . $participant . '}', '(' . $expandedGroups[$participant] . ')', $mask);
-                        }
-
-                        $sWhere = " OR ( $mask )";
-
-                    } else {
-                        $sGroups = implode(', ', array_keys($whereGroups));
-                        $this->error("Mask not found with groups $sGroups.");
-                    }
-
-                }
-
-                break;
-            default:
-                $this->error("Unknown mode $mode.");
-                break;
-        }
-
-
-        return $sWhere;
-    }
 }
