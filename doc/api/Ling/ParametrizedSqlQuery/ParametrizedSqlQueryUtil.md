@@ -33,7 +33,7 @@ class <span class="pl-k">ParametrizedSqlQueryUtil</span>  {
     - private array [$_options](#property-_options) ;
     - protected array [$_markers](#property-_markers) ;
     - protected array [$_processedMarkers](#property-_processedMarkers) ;
-    - protected array [$_allowedColumnNames](#property-_allowedColumnNames) ;
+    - protected array [$_colName2colExpression](#property-_colName2colExpression) ;
     - protected [Ling\UniversalLogger\UniversalLoggerInterface](https://github.com/lingtalfi/UniversalLogger/blob/master/UniversalLoggerInterface.php) [$logger](#property-logger) ;
 
 - Methods
@@ -46,7 +46,6 @@ class <span class="pl-k">ParametrizedSqlQueryUtil</span>  {
     - protected [resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md)(string $internalMarkerName, $value, array $tagOptions) : string
     - protected [applyOperatorAndValueRoutine](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/applyOperatorAndValueRoutine.md)(string &$expression, array $transformLikeOptions, array &$tags, array $tagOptions) : void
     - protected [getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md)(string $marker, ?bool $isFinal = false) : string
-    - private [getAllowedColumnNamesByBaseFields](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getAllowedColumnNamesByBaseFields.md)(array $baseFields) : array
 
 }
 
@@ -108,10 +107,11 @@ Properties
     
     
 
-- <span id="property-_allowedColumnNames"><b>_allowedColumnNames</b></span>
+- <span id="property-_colName2colExpression"><b>_colName2colExpression</b></span>
 
-    This property holds the $_allowedColumnNames for this instance.
+    This property holds the $_colName2colExpression for this instance.
     It's used only in the context of the getSqlQuery method.
+    It's an array of alias => column expression representing the allowed columns.
     
     
 
@@ -135,7 +135,6 @@ Methods
 - [ParametrizedSqlQueryUtil::resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md) &ndash; Resolves the percent symbol in internal marker notation, and returns the result.
 - [ParametrizedSqlQueryUtil::applyOperatorAndValueRoutine](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/applyOperatorAndValueRoutine.md) &ndash; Applies the transformIfLike routine to the given expression.
 - [ParametrizedSqlQueryUtil::getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md) &ndash; Returns a unique marker name that's not already in the _markers array.
-- [ParametrizedSqlQueryUtil::getAllowedColumnNamesByBaseFields](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getAllowedColumnNamesByBaseFields.md) &ndash; Returns the array of allowed column names from the given base fields.
 
 
 
@@ -150,4 +149,4 @@ See the source code of [Ling\ParametrizedSqlQuery\ParametrizedSqlQueryUtil](http
 
 SeeAlso
 ==============
-Previous class: [ParametrizedSqlQueryException](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/Exception/ParametrizedSqlQueryException.md)<br>
+Previous class: [ParametrizedSqlQueryHelper](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/Helper/ParametrizedSqlQueryHelper.md)<br>

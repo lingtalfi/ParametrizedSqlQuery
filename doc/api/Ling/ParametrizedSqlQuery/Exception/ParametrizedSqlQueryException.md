@@ -54,4 +54,4 @@ See the source code of [Ling\ParametrizedSqlQuery\Exception\ParametrizedSqlQuery
 
 SeeAlso
 ==============
-Next class: [ParametrizedSqlQueryUtil](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil.md)<br>
+Next class: [ParametrizedSqlQueryHelper](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/Helper/ParametrizedSqlQueryHelper.md)<br>

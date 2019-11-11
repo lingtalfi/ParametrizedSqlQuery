@@ -442,6 +442,10 @@ array(4) {
 History Log
 =============
     
+- 1.7.0 -- 2019-11-11
+
+    - add ParametrizedSqlQueryHelper
+    
 - 1.6.0 -- 2019-11-11
 
     - update ParametrizedSqlQueryUtil, now accepts alias notation in base_fields

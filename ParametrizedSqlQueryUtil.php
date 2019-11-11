@@ -8,6 +8,7 @@ use Ling\BabyYaml\BabyYamlUtil;
 use Ling\Bat\ArrayTool;
 use Ling\Bat\StringTool;
 use Ling\ParametrizedSqlQuery\Exception\ParametrizedSqlQueryException;
+use Ling\ParametrizedSqlQuery\Helper\ParametrizedSqlQueryHelper;
 use Ling\SqlQuery\SqlQuery;
 use Ling\UniversalLogger\UniversalLoggerInterface;
 
@@ -103,12 +104,14 @@ class ParametrizedSqlQueryUtil
     protected $_processedMarkers;
 
     /**
-     * This property holds the $_allowedColumnNames for this instance.
+     * This property holds the $_colName2colExpression for this instance.
      * It's used only in the context of the getSqlQuery method.
+     * It's an array of alias => column expression representing the allowed columns.
+     *
      *
      * @var array
      */
-    protected $_allowedColumnNames;
+    protected $_colName2colExpression;
 
     /**
      * This property holds the logger for this instance.
@@ -163,7 +166,8 @@ class ParametrizedSqlQueryUtil
             if (false === is_array($fields)) {
                 $fields = [$fields];
             }
-            $this->_allowedColumnNames = $this->getAllowedColumnNamesByBaseFields($fields);
+            $this->_colName2colExpression = ParametrizedSqlQueryHelper::getColumnName2ColumnExpression($fields);
+
             $query->setTable($requestDeclaration['table']);
             foreach ($fields as $field) {
                 $query->addField($field);
@@ -430,9 +434,12 @@ class ParametrizedSqlQueryUtil
                 //--------------------------------------------
                 switch ($variable) {
                     case "column":
-                        if (false === in_array($value, $this->_allowedColumnNames, true)) {
+                        if (true === array_key_exists($value, $this->_colName2colExpression)) {
+                            $value = $this->_colName2colExpression[$value];
+                        } else {
                             $this->error("Unexpected value for variable \"column\" (tag=$tagName).");
                         }
+
                         break;
                     case "direction":
                         if (false === in_array($value, ["asc", 'desc'], true)) {
@@ -752,22 +759,4 @@ class ParametrizedSqlQueryUtil
     }
 
 
-    //--------------------------------------------
-    //
-    //--------------------------------------------
-    /**
-     * Returns the array of allowed column names from the given base fields.
-     *
-     * @param array $baseFields
-     * @return array
-     */
-    private function getAllowedColumnNamesByBaseFields(array $baseFields): array
-    {
-        $ret = [];
-        foreach ($baseFields as $colExpr) {
-            $p = preg_split('!\s+as\s+!i', $colExpr);
-            $ret[] = array_pop($p);
-        }
-        return $ret;
-    }
 }
