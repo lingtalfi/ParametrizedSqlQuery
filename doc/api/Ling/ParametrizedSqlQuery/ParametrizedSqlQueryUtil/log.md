@@ -16,7 +16,7 @@ Description
 ================
 
 
-protected [ParametrizedSqlQueryUtil::log](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/log.md)(?$message, string $channel = debug) : void
+protected [ParametrizedSqlQueryUtil::log](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/log.md)($message, ?string $channel = debug) : void
 
 
 

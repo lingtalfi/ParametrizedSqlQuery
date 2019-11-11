@@ -441,7 +441,11 @@ array(4) {
 
 History Log
 =============
+    
+- 1.6.0 -- 2019-11-11
 
+    - update ParametrizedSqlQueryUtil, now accepts alias notation in base_fields
+    
 - 1.5.0 -- 2019-10-11
 
     - update ParametrizedSqlQueryUtil to keep up with new duelist conception

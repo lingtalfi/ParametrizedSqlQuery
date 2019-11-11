@@ -103,11 +103,12 @@ class ParametrizedSqlQueryUtil
     protected $_processedMarkers;
 
     /**
-     * This property holds the fields for this instance.
+     * This property holds the $_allowedColumnNames for this instance.
      * It's used only in the context of the getSqlQuery method.
+     *
      * @var array
      */
-    protected $_fields;
+    protected $_allowedColumnNames;
 
     /**
      * This property holds the logger for this instance.
@@ -155,7 +156,6 @@ class ParametrizedSqlQueryUtil
 
         if (ArrayTool::arrayKeyExistAll(['table', 'base_fields'], $requestDeclaration)) {
 
-
             //--------------------------------------------
             // BASE
             //--------------------------------------------
@@ -163,7 +163,7 @@ class ParametrizedSqlQueryUtil
             if (false === is_array($fields)) {
                 $fields = [$fields];
             }
-            $this->_fields = $fields;
+            $this->_allowedColumnNames = $this->getAllowedColumnNamesByBaseFields($fields);
             $query->setTable($requestDeclaration['table']);
             foreach ($fields as $field) {
                 $query->addField($field);
@@ -339,7 +339,7 @@ class ParametrizedSqlQueryUtil
             }
 
 
-//            az($query->getSqlQuery(), $this->_markers);
+//            az(__FILE__, $query->getSqlQuery(), $this->_markers);
             return $query;
 
         } else {
@@ -430,7 +430,7 @@ class ParametrizedSqlQueryUtil
                 //--------------------------------------------
                 switch ($variable) {
                     case "column":
-                        if (false === in_array($value, $this->_fields, true)) {
+                        if (false === in_array($value, $this->_allowedColumnNames, true)) {
                             $this->error("Unexpected value for variable \"column\" (tag=$tagName).");
                         }
                         break;
@@ -751,4 +751,23 @@ class ParametrizedSqlQueryUtil
         return $res;
     }
 
+
+    //--------------------------------------------
+    //
+    //--------------------------------------------
+    /**
+     * Returns the array of allowed column names from the given base fields.
+     *
+     * @param array $baseFields
+     * @return array
+     */
+    private function getAllowedColumnNamesByBaseFields(array $baseFields): array
+    {
+        $ret = [];
+        foreach ($baseFields as $colExpr) {
+            $p = preg_split('!\s+as\s+!i', $colExpr);
+            $ret[] = array_pop($p);
+        }
+        return $ret;
+    }
 }

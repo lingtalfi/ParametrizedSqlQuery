@@ -4,7 +4,7 @@
 
 The ParametrizedSqlQueryUtil class
 ================
-2019-08-12 --> 2019-10-11
+2019-08-12 --> 2019-11-11
 
 
 
@@ -33,19 +33,20 @@ class <span class="pl-k">ParametrizedSqlQueryUtil</span>  {
     - private array [$_options](#property-_options) ;
     - protected array [$_markers](#property-_markers) ;
     - protected array [$_processedMarkers](#property-_processedMarkers) ;
-    - protected array [$_fields](#property-_fields) ;
+    - protected array [$_allowedColumnNames](#property-_allowedColumnNames) ;
     - protected [Ling\UniversalLogger\UniversalLoggerInterface](https://github.com/lingtalfi/UniversalLogger/blob/master/UniversalLoggerInterface.php) [$logger](#property-logger) ;
 
 - Methods
     - public [__construct](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/__construct.md)() : void
-    - public [getSqlQuery](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getSqlQuery.md)(array $requestDeclaration, array $tags = []) : [SqlQuery](https://github.com/lingtalfi/SqlQuery)
+    - public [getSqlQuery](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getSqlQuery.md)(array $requestDeclaration, ?array $tags = []) : [SqlQuery](https://github.com/lingtalfi/SqlQuery)
     - public [setLogger](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/setLogger.md)([Ling\UniversalLogger\UniversalLoggerInterface](https://github.com/lingtalfi/UniversalLogger/blob/master/UniversalLoggerInterface.php) $logger) : void
-    - protected [log](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/log.md)(?$message, string $channel = debug) : void
+    - protected [log](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/log.md)($message, ?string $channel = debug) : void
     - protected [error](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/error.md)(string $message) : void
     - protected [prepareExpression](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/prepareExpression.md)(string $expr, string $tagName, array $tagVariables, array $tagOptions) : string
-    - protected [resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md)(string $internalMarkerName, ?$value, array $tagOptions) : string
+    - protected [resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md)(string $internalMarkerName, $value, array $tagOptions) : string
     - protected [applyOperatorAndValueRoutine](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/applyOperatorAndValueRoutine.md)(string &$expression, array $transformLikeOptions, array &$tags, array $tagOptions) : void
-    - protected [getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md)(string $marker, bool $isFinal = false) : string
+    - protected [getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md)(string $marker, ?bool $isFinal = false) : string
+    - private [getAllowedColumnNamesByBaseFields](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getAllowedColumnNamesByBaseFields.md)(array $baseFields) : array
 
 }
 
@@ -107,9 +108,9 @@ Properties
     
     
 
-- <span id="property-_fields"><b>_fields</b></span>
+- <span id="property-_allowedColumnNames"><b>_allowedColumnNames</b></span>
 
-    This property holds the fields for this instance.
+    This property holds the $_allowedColumnNames for this instance.
     It's used only in the context of the getSqlQuery method.
     
     
@@ -134,6 +135,7 @@ Methods
 - [ParametrizedSqlQueryUtil::resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/resolveInternalMarkerPercent.md) &ndash; Resolves the percent symbol in internal marker notation, and returns the result.
 - [ParametrizedSqlQueryUtil::applyOperatorAndValueRoutine](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/applyOperatorAndValueRoutine.md) &ndash; Applies the transformIfLike routine to the given expression.
 - [ParametrizedSqlQueryUtil::getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getNewMarkerName.md) &ndash; Returns a unique marker name that's not already in the _markers array.
+- [ParametrizedSqlQueryUtil::getAllowedColumnNamesByBaseFields](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/doc/api/Ling/ParametrizedSqlQuery/ParametrizedSqlQueryUtil/getAllowedColumnNamesByBaseFields.md) &ndash; Returns the array of allowed column names from the given base fields.
 
 
 
