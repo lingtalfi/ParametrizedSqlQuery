@@ -19,6 +19,10 @@ class ParametrizedSqlQueryHelper
     {
         $ret = [];
         foreach ($columns as $colExpr) {
+
+
+
+
             $p = preg_split('!\s+as\s+!i', $colExpr);
             if (count($p) > 1) {
                 $alias = array_pop($p);
@@ -27,6 +31,16 @@ class ParametrizedSqlQueryHelper
                 $theColExpr = $colExpr;
                 $alias = $colExpr;
             }
+
+
+            // removing possible alias prefixes
+            if (
+                false !== strpos($alias, ".")
+            ) {
+                $p = explode(".", $alias, 2);
+                $alias = array_pop($p);
+            }
+
 
             $ret[$alias] = $theColExpr;
         }

@@ -49,7 +49,7 @@ Returns array.
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryHelper::getColumnName2ColumnExpression](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/Helper/ParametrizedSqlQueryHelper.php#L18-L34)
+See the source code for method [ParametrizedSqlQueryHelper::getColumnName2ColumnExpression](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/Helper/ParametrizedSqlQueryHelper.php#L18-L48)
 
 
 See Also
