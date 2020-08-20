@@ -121,12 +121,33 @@ class ParametrizedSqlQueryUtil
 
 
     /**
+     * This property holds the developerVariables for this instance.
+     * @var array
+     */
+    protected $developerVariables;
+
+
+    /**
      * Builds the ParametrizedSqlQueryUtil instance.
      */
     public function __construct()
     {
         $this->logger = null;
+        $this->developerVariables = [];
     }
+
+    /**
+     * Sets the developerVariables.
+     *
+     * @param mixed $developerVariables
+     */
+    public function setDeveloperVariables($developerVariables)
+    {
+        $this->developerVariables = $developerVariables;
+    }
+
+
+
 
 
     /**
@@ -200,7 +221,10 @@ class ParametrizedSqlQueryUtil
                 if (false === is_array($baseWhere)) {
                     $baseWhere = [$baseWhere];
                 }
-                $query->addWhere(implode(PHP_EOL, $baseWhere));
+                foreach($baseWhere as $where){
+                    $this->resolveDeveloperVariable($where);
+                    $query->addWhere($where);
+                }
             }
 
             if (array_key_exists("base_having", $requestDeclaration)) {
@@ -788,4 +812,14 @@ class ParametrizedSqlQueryUtil
     }
 
 
+    /**
+     * Resolves the developer variables in the given expr.
+     *
+     * @param string $expr
+     */
+    protected function resolveDeveloperVariable(string &$expr){
+        foreach($this->developerVariables as $k => $v){
+            $expr = str_replace('${'. $k .'}', $v, $expr);
+        }
+    }
 }
