@@ -53,7 +53,7 @@ Returns string.
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryUtil::getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L752-L759)
+See the source code for method [ParametrizedSqlQueryUtil::getNewMarkerName](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L781-L788)
 
 
 See Also

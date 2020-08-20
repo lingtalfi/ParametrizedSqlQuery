@@ -61,7 +61,7 @@ Returns string.
 
 Source Code
 ===========
-See the source code for method [ParametrizedSqlQueryUtil::resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L571-L598)
+See the source code for method [ParametrizedSqlQueryUtil::resolveInternalMarkerPercent](https://github.com/lingtalfi/ParametrizedSqlQuery/blob/master/ParametrizedSqlQueryUtil.php#L600-L627)
 
 
 See Also

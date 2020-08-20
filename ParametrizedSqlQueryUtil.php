@@ -163,6 +163,8 @@ class ParametrizedSqlQueryUtil
             // BASE
             //--------------------------------------------
             $fields = $requestDeclaration['base_fields'];
+            $hasBaseWhere = false;
+
             if (false === is_array($fields)) {
                 $fields = [$fields];
             }
@@ -181,6 +183,7 @@ class ParametrizedSqlQueryUtil
                     $query->addJoin($join);
                 }
             }
+
             if (array_key_exists("base_group_by", $requestDeclaration)) {
                 $baseGroupBy = $requestDeclaration['base_group_by'];
                 if (false === is_array($baseGroupBy)) {
@@ -189,6 +192,15 @@ class ParametrizedSqlQueryUtil
                 foreach ($baseGroupBy as $groupBy) {
                     $query->addGroupBy($groupBy);
                 }
+            }
+
+            if (array_key_exists("base_where", $requestDeclaration)) {
+                $hasBaseWhere = true;
+                $baseWhere = $requestDeclaration['base_where'];
+                if (false === is_array($baseWhere)) {
+                    $baseWhere = [$baseWhere];
+                }
+                $query->addWhere(implode(PHP_EOL, $baseWhere));
             }
 
             if (array_key_exists("base_having", $requestDeclaration)) {
@@ -200,6 +212,7 @@ class ParametrizedSqlQueryUtil
                     $query->addHaving($having);
                 }
             }
+
             if (array_key_exists("base_order", $requestDeclaration)) {
                 $baseOrder = $requestDeclaration['base_order'];
                 if (false === is_array($baseOrder)) {
@@ -210,6 +223,9 @@ class ParametrizedSqlQueryUtil
                     $query->addOrderBy($p[0], $p[1]);
                 }
             }
+
+
+
 
 
             //--------------------------------------------
@@ -277,11 +293,24 @@ class ParametrizedSqlQueryUtil
             }
 
 
+
+
+
             //--------------------------------------------
             // WHERE RESOLUTION
             //--------------------------------------------
             if ($whereBlocks) {
                 $sWhere = "";
+
+
+                if(true===$hasBaseWhere){
+
+                    $baseWhereSep = $requestDeclaration['base_where_sep']??"and";
+                    $sWhere .= " " . $baseWhereSep . " " . PHP_EOL;
+                }
+
+
+
                 $sWhere .= implode(PHP_EOL, $whereBlocks);
                 $sWhere .= PHP_EOL;
                 $query->addWhere($sWhere);
