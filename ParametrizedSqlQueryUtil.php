@@ -335,6 +335,7 @@ class ParametrizedSqlQueryUtil
 
 
 
+
                 $sWhere .= implode(PHP_EOL, $whereBlocks);
                 $sWhere .= PHP_EOL;
                 $query->addWhere($sWhere);
