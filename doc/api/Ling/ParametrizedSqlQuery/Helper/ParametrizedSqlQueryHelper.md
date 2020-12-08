@@ -4,7 +4,7 @@
 
 The ParametrizedSqlQueryHelper class
 ================
-2019-08-12 --> 2020-12-04
+2019-08-12 --> 2020-12-08
 
 
 

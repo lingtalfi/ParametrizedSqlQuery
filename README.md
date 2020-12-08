@@ -442,6 +442,10 @@ array(4) {
 History Log
 =============
 
+- 1.10.2 -- 2020-12-08
+
+    - Fix lpi-deps not using natsort.
+
 - 1.10.1 -- 2020-12-04
 
     - Add lpi-deps.byml file
